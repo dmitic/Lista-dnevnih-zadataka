@@ -241,14 +241,24 @@ function editTekucegZadatka(e){
       }
     }
 
-    promenjeni_zadatak = prompt('Izmenite zadatak', za_edit.textContent);
-    // promenjeni_zadatak = 'test test';
+    promenjeni_zadatak = prompt('Izmenite zadatak', za_edit.textContent).trim();
+
     if (promenjeni_zadatak !== null) {
-      if (promenjeni_zadatak.trim() !== '') {
+      if (promenjeni_zadatak === '') {
+        alert('Zadatak ne može biti prazno polje!');
+        return false;
+        } else {
+          for (let i = 0; i < z_length; i++){
+            if (zadaci[i].zadatak.toLowerCase() === promenjeni_zadatak.toLowerCase()){
+              alert('Zadatak već postoji na listi!');
+              return false;
+            }
+          }
+        }
         zadaci[ind].zadatak = promenjeni_zadatak;
         localStorage.setItem('zadaci', JSON.stringify(zadaci));  
         za_edit.childNodes[2].textContent = promenjeni_zadatak;
       }
     }
-  }
+  
 }
