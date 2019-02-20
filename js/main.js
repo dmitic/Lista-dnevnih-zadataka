@@ -246,8 +246,6 @@ function editTekucegZadatka(e){
     if (promenjeni_zadatak !== null) {
       if (promenjeni_zadatak.trim() !== '') {
         zadaci[ind].zadatak = promenjeni_zadatak;
-        zadaci.push(zadatak);
-        zadaci.splice(z_length, 1);
         localStorage.setItem('zadaci', JSON.stringify(zadaci));  
         za_edit.childNodes[2].textContent = promenjeni_zadatak;
       }
