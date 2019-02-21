@@ -247,18 +247,18 @@ function editTekucegZadatka(e){
       if (promenjeni_zadatak === '') {
         alert('Zadatak ne može biti prazno polje!');
         return false;
-        } else {
-          for (let i = 0; i < z_length; i++){
-            if (zadaci[i].zadatak.toLowerCase() === promenjeni_zadatak.toLowerCase()){
-              alert('Zadatak već postoji na listi!');
-              return false;
-            }
-          }
-        }
-        zadaci[ind].zadatak = promenjeni_zadatak;
-        localStorage.setItem('zadaci', JSON.stringify(zadaci));  
-        za_edit.childNodes[2].textContent = promenjeni_zadatak;
       }
+      
+      for (let i = 0; i < z_length; i++){
+        if (zadaci[i].zadatak.toLowerCase() === promenjeni_zadatak.toLowerCase()){
+          alert('Zadatak već postoji na listi!');
+          return false;
+        }
+      }
+      
+      zadaci[ind].zadatak = promenjeni_zadatak;
+      localStorage.setItem('zadaci', JSON.stringify(zadaci));  
+      za_edit.childNodes[2].textContent = promenjeni_zadatak;
     }
-  
+  }
 }
