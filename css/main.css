@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900');
+@import url("https://fonts.googleapis.com/css?family=Lato:300,400,700,900");
 
 html body {
   width: 100%;
@@ -9,7 +9,7 @@ html body {
 }
 
 body * {
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   box-sizing: border-box;
 }
 a {
@@ -29,7 +29,7 @@ ul ol {
       rgba(255, 255, 255, 0.75),
       rgba(255, 255, 255, 0.75)
     ),
-    url('../images/background.jpg');
+    url("../images/background.jpg");
   background-size: cover;
   background-attachment: fixed;
   z-index: -1;
@@ -59,65 +59,25 @@ ul ol {
   font-weight: 700 !important;
 }
 
-@media only screen and (max-width: 992px){
-  .heading, .footer {
-    line-height: 70px;
-    height: 70px;
-  }
-  .heading {
-    margin-top: -30px;
-    font-size: 35px;
-    font-weight: 300;
-  }
-  .footer {
-    font-size: 12px;
-  }
-}
-@media only screen and (max-width: 600px){
-  .heading, .footer {
-    line-height: 60px;
-    height: 60px;
-  }
-  .heading {
-    margin-top: -25px;
-    font-size: 30px;
-    font-weight: 300;
-  }
-  .footer {
-    font-size: 10px;
-  }
-}
-@media only screen and (max-width: 360px){
-  .heading, .footer {
-    line-height: 50px;
-    height: 50px;
-  }
-  .heading {
-    margin-top: -25px;
-    font-size: 20px;
-    font-weight: 300;
-  }
-  .footer {
-    font-size: 8px;
-  }
-}
 .container {
   opacity: 0.75;
 }
 
-.input-field input[type=text]:focus {
-  border-bottom: 1px solid #212121  !important;
+.input-field input[type="text"]:focus {
+  border-bottom: 1px solid #212121 !important;
   box-shadow: 0 1px 0 0 #212121 !important;
 }
 
 .input-field input:focus + label {
-  color: #212121  !important;
+  color: #212121 !important;
 }
 
 ul.collection li.collection-item:hover {
   background: #e4e4e4;
 }
-i.fa-arrow-circle-down, i.fa-ban, i.fa-edit {
+i.fa-arrow-circle-down,
+i.fa-ban,
+i.fa-edit {
   cursor: pointer;
 }
 
@@ -136,8 +96,8 @@ a.red:hover {
   padding-left: 15px;
 }
 
-.li_grid{
-  display: grid; 
+.li_grid {
+  display: grid;
   grid-template-columns: 1em max-content 1fr 1.5em 1.5em;
   grid-template-rows: auto;
   grid-column-gap: 5px;
@@ -149,4 +109,98 @@ a.red:hover {
 
 .sakrij {
   display: none;
+}
+
+.zeleno,
+.crveno {
+  position: fixed;
+  top: 6.5em;
+  left: 50%;
+  transform: translate(-50%);
+  padding: 1em 3em;
+  border-radius: 3px;
+  color: white;
+  margin-bottom: 3px;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
+  opacity: 0.9;
+  z-index: 50;
+}
+
+.crveno {
+  background-color: #f44336;
+}
+
+.zeleno {
+  background-color: #4caf50;
+}
+
+@media only screen and (max-width: 992px) {
+  .heading,
+  .footer {
+    line-height: 70px;
+    height: 70px;
+  }
+  .heading {
+    margin-top: -30px;
+    font-size: 35px;
+    font-weight: 300;
+  }
+  .zeleno,
+  .crveno {
+    padding: 0.8em 1.5em;
+    font-size: 14px;
+    top: 5.5em;
+  }
+  .footer {
+    font-size: 12px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .heading,
+  .footer {
+    line-height: 60px;
+    height: 60px;
+  }
+  .heading {
+    margin-top: -25px;
+    font-size: 30px;
+    font-weight: 300;
+  }
+  .zeleno,
+  .crveno {
+    padding: 0.8em 2em;
+    font-size: 11px;
+  }
+  .footer {
+    font-size: 10px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .zeleno,
+  .crveno {
+    padding: 0.5em 1em;
+    font-size: 10px;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  .heading,
+  .footer {
+    line-height: 50px;
+    height: 50px;
+  }
+  .heading {
+    margin-top: -25px;
+    font-size: 20px;
+    font-weight: 300;
+  }
+  .zeleno,
+  .crveno {
+    padding: 0.2em 0.5em;
+    font-size: 9px;
+  }
+  .footer {
+    font-size: 8px;
+  }
 }

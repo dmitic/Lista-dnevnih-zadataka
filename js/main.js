@@ -20,7 +20,7 @@ function dodajZadatak(e) {
   let unos_zadatka = novi_zadatak.value.trim();
   
   if (unos_zadatka === '') {
-    alert('Polje za unos zadataka ne sme biti prazno!');
+    poruke('Polje za unos zadataka ne sme biti prazno!', 'crveno');
     novi_zadatak.focus();
     return false;
   }
@@ -31,7 +31,7 @@ function dodajZadatak(e) {
     let z_length = zadaci.length;
     for (let i = 0; i < z_length; i++){
       if (zadaci[i].zadatak.toLowerCase() === unos_zadatka.toLowerCase()){
-        alert('Zadatak već postoji na listi, unesite novi zadatak!');
+        poruke('Zadatak već postoji na listi, unesite novi zadatak!', 'crveno');
         novi_zadatak.focus();
         return false;
       }
@@ -70,6 +70,7 @@ function snimiNoviZadatak(zadatak){
   let zadaci = uZadaci('zadaci');
   zadaci.push(zadatak);
   localStorage.setItem('zadaci', JSON.stringify(zadaci));
+  poruke('Zadatak uspešno dodat!', 'zeleno');
 }
 
 // prikazuje sve zadatke i tekuće i završene zavisno od argumenata
@@ -161,13 +162,13 @@ function editTekucegZadatka(e){
 
     if (promenjeni_zadatak !== null) {
       if (promenjeni_zadatak === '') {
-        alert('Zadatak ne može biti prazno polje!');
+        poruke('Zadatak ne može biti prazno polje!', 'crveno');
         return false;
       }
       
       for (let i = 0; i < z_length; i++){
         if (zadaci[i].zadatak.toLowerCase() === promenjeni_zadatak.toLowerCase()){
-          alert('Zadatak već postoji na listi!');
+          poruke('Zadatak već postoji na listi!', 'crveno');
           return false;
         }
       }
@@ -175,6 +176,7 @@ function editTekucegZadatka(e){
       zadaci[ind].zadatak = promenjeni_zadatak;
       localStorage.setItem('zadaci', JSON.stringify(zadaci));  
       za_edit.childNodes[2].textContent = promenjeni_zadatak;
+      poruke('Zadatak je uspešno promenjen!', 'zeleno');
     }
     uFilter('#filter');
   }
@@ -202,9 +204,10 @@ function skloniIzTekucih(objZadatak){
 
 function premestiUZavrsene(zavrseniZadatak){
   let zavrseniZadaci = uZadaci('zavrseniZadaci');
-
+  
   zavrseniZadaci.push({zadatak: zavrseniZadatak});
   localStorage.setItem('zavrseniZadaci', JSON.stringify(zavrseniZadaci));
+  poruke('Zadatak je uspešno prebačen u listu završenih zadataka!', 'zeleno');
 }
 
 function obrisiZavrseni(e){
@@ -235,15 +238,24 @@ function obrisiZavrseniIzLS(objZadatak){
 
   uFilter('#filter_gotovih');
   localStorage.setItem('zavrseniZadaci', JSON.stringify(zavrseniZadaci));
+  poruke('Zadatak je uspešno obrisan!', 'zeleno');
 }
 
 // briše sve gotove zadatke i čisti LS
 function obrisiSveGotove(){
+  let zavrseniZadaci = uZadaci('zavrseniZadaci');
+
+  if (zavrseniZadaci.length === 0) {
+    poruke('Nema zadataka za brisanje!', 'crveno');
+    return false;
+  }
+
   if(confirm('Da li ste sigurni da želite da obrišete sve gotove zadatke?')){
     while(lista_gotovih_zadataka.firstChild){
       lista_gotovih_zadataka.removeChild(lista_gotovih_zadataka.firstChild);
     }
     localStorage.removeItem('zavrseniZadaci');
+    poruke('Svi gotovi zadaci su uspešno obrisani!', 'zeleno');
   }
 }
 
@@ -286,3 +298,17 @@ filter.addEventListener('keyup', function(){
 filter_gotovih.addEventListener('keyup', function(){
   filterTasks('.finished', '#filter_gotovih');
 });
+
+
+function poruke(poruka, boja) {
+  let div = document.createElement('div');
+  div.className = 'msg left ' + boja;
+  div.appendChild(document.createTextNode(poruka));
+  let forma_rod = document.querySelector('.container');
+  let btn = document.querySelector('.row');
+  forma_rod.insertBefore(div, btn);
+
+  setTimeout(function(){
+    document.querySelector('.msg').remove();
+  }, 3000);
+}
