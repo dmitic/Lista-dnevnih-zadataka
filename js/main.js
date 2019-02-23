@@ -167,7 +167,7 @@ function editTekucegZadatka(e){
       }
       
       for (let i = 0; i < z_length; i++){
-        if (zadaci[i].zadatak.toLowerCase() === promenjeni_zadatak.toLowerCase()){
+        if (zadaci[i].zadatak.toLowerCase() === promenjeni_zadatak.toLowerCase().trim()){
           poruke('Zadatak već postoji na listi!', 'crveno');
           return false;
         }
