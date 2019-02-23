@@ -18,8 +18,8 @@ function uFilter(filter){
 function dodajZadatak(e) {
   e.preventDefault();
   let unos_zadatka = novi_zadatak.value.trim();
-  
-  if (unos_zadatka === '') {
+ 
+  if (unos_zadatka.trim() === '') {
     poruke('Polje za unos zadataka ne sme biti prazno!', 'crveno');
     novi_zadatak.focus();
     return false;
@@ -42,7 +42,7 @@ function dodajZadatak(e) {
   li.className = 'collection-item current li_grid';
   li.innerHTML ='<i class="fa fa-arrow-circle-right red-text u-padding-right vert_centriranje"></i>';
   li.innerHTML += '<span class="badge new red u-padding-right" data-badge-caption="Novo!"></span>';
-  li.appendChild(document.createTextNode(novi_zadatak.value));
+  li.appendChild(document.createTextNode(unos_zadatka));
 
   // za edit dugme
   let edit = document.createElement('a');
@@ -60,7 +60,7 @@ function dodajZadatak(e) {
   li.appendChild(link);
   lista_trenutnih_zadataka.appendChild(li);
   
-  snimiNoviZadatak({ zadatak: novi_zadatak.value });
+  snimiNoviZadatak({ zadatak: unos_zadatka });
   novi_zadatak.value = '';
   novi_zadatak.focus();
 }
