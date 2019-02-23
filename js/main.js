@@ -158,10 +158,10 @@ function editTekucegZadatka(e){
       }
     }
 
-    promenjeni_zadatak = prompt('Izmenite zadatak', za_edit.textContent).trim();
+    promenjeni_zadatak = prompt('Izmenite zadatak', za_edit.textContent);
 
     if (promenjeni_zadatak !== null) {
-      if (promenjeni_zadatak === '') {
+      if (promenjeni_zadatak.trim() === '') {
         poruke('Zadatak ne može biti prazno polje!', 'crveno');
         return false;
       }
@@ -176,7 +176,7 @@ function editTekucegZadatka(e){
       zadaci[ind].zadatak = promenjeni_zadatak;
       localStorage.setItem('zadaci', JSON.stringify(zadaci));  
       za_edit.childNodes[2].textContent = promenjeni_zadatak;
-      poruke('Zadatak je uspešno promenjen!', 'zeleno');
+      poruke('Zadatak je uspešno izmenjen!', 'zeleno');
     }
     uFilter('#filter');
   }
@@ -255,7 +255,7 @@ function obrisiSveGotove(){
       lista_gotovih_zadataka.removeChild(lista_gotovih_zadataka.firstChild);
     }
     localStorage.removeItem('zavrseniZadaci');
-    poruke('Svi gotovi zadaci su uspešno obrisani!', 'zeleno');
+    poruke('Gotovi zadaci su uspešno obrisani!', 'zeleno');
   }
 }
 
@@ -267,6 +267,19 @@ function filterTasks(koji_task, koji_filter){
     var item = zadatak.childNodes[2].textContent;
     item.toLowerCase().indexOf(tekst) != -1 ? zadatak.style.display = 'grid' : zadatak.style.display = 'none';
   });
+}
+
+function poruke(poruka, boja) {
+  let div = document.createElement('div');
+  div.className = 'msg left ' + boja;
+  div.appendChild(document.createTextNode(poruka));
+  let forma_rod = document.querySelector('.container');
+  let el_ispod = document.querySelector('.row');
+  forma_rod.insertBefore(div, el_ispod);
+
+  setTimeout(function(){
+    document.querySelector('.msg').remove();
+  }, 3000);
 }
 
 dodaj_zadatak_forma.addEventListener('submit', function(e){
@@ -298,17 +311,3 @@ filter.addEventListener('keyup', function(){
 filter_gotovih.addEventListener('keyup', function(){
   filterTasks('.finished', '#filter_gotovih');
 });
-
-
-function poruke(poruka, boja) {
-  let div = document.createElement('div');
-  div.className = 'msg left ' + boja;
-  div.appendChild(document.createTextNode(poruka));
-  let forma_rod = document.querySelector('.container');
-  let btn = document.querySelector('.row');
-  forma_rod.insertBefore(div, btn);
-
-  setTimeout(function(){
-    document.querySelector('.msg').remove();
-  }, 3000);
-}
