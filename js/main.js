@@ -11,7 +11,14 @@ function uZadaci(ls){
 }
 
 function uFilter(filter){
-  if (document.querySelector(filter).value !== '') document.querySelector(filter).focus();
+  let fil_polje = document.querySelector(filter);
+
+  if (fil_polje.value.trim() !== '') {
+    fil_polje.value = fil_polje.value.trim();
+    fil_polje.focus();
+  }
+  
+  if (fil_polje.value.trim() === '') fil_polje.value = '';
 }
 
 // Dodavanje zadataka
@@ -119,6 +126,8 @@ function izbrisiTekuciZadatak(e){
       tar_element.remove();
       prebaciIztekucihUGotove(tar_element.textContent);
       skloniIzTekucih(tar_element);
+    } else {
+      uFilter('#filter');
     }
   }
 }
@@ -165,12 +174,14 @@ function editTekucegZadatka(e){
 
       if (promenjeni_zadatak === '') {
         poruke('Zadatak ne može biti prazno polje!', 'crveno');
+        uFilter('#filter');
         return false;
       }
       
       for (let i = 0; i < z_length; i++){
         if (zadaci[i].zadatak.toLowerCase() === promenjeni_zadatak.toLowerCase()){
           poruke('Zadatak već postoji na listi!', 'crveno');
+          uFilter('#filter');
           return false;
         }
       }
@@ -200,8 +211,8 @@ function skloniIzTekucih(objZadatak){
     zadaci.splice(ind, 1);
   }
 
-  uFilter('#filter');
   localStorage.setItem('zadaci', JSON.stringify(zadaci));
+  uFilter('#filter');
 }
 
 function premestiUZavrsene(zavrseniZadatak){
@@ -219,6 +230,8 @@ function obrisiZavrseni(e){
     if(confirm('Da li ste sigurni da želite da obrišete zadatak?')){
       tar_element.remove();
       obrisiZavrseniIzLS(tar_element);
+    } else {
+      uFilter('#filter_gotovih');
     }
   }
 }
@@ -238,9 +251,9 @@ function obrisiZavrseniIzLS(objZadatak){
     zavrseniZadaci.splice(ind, 1);
   }
 
-  uFilter('#filter_gotovih');
   localStorage.setItem('zavrseniZadaci', JSON.stringify(zavrseniZadaci));
   poruke('Zadatak je uspešno obrisan!', 'zeleno');
+  uFilter('#filter_gotovih');
 }
 
 // briše sve gotove zadatke i čisti LS
@@ -249,6 +262,7 @@ function obrisiSveGotove(){
 
   if (zavrseniZadaci.length === 0) {
     poruke('Nema zadataka za brisanje!', 'crveno');
+    uFilter('#filter_gotovih');
     return false;
   }
 
@@ -258,11 +272,14 @@ function obrisiSveGotove(){
     }
     localStorage.removeItem('zavrseniZadaci');
     poruke('Gotovi zadaci su uspešno obrisani!', 'zeleno');
+    uFilter('#filter_gotovih');
+  } else {
+    uFilter('#filter_gotovih');
   }
 }
 
 // filter
-function filterTasks(koji_task, koji_filter){
+function filterZadataka(koji_task, koji_filter){
   var tekst = document.querySelector(koji_filter).value.toLowerCase().trim();
   document.querySelectorAll(koji_task).forEach(
     function(zadatak){
@@ -307,9 +324,9 @@ lista_gotovih_zadataka.addEventListener('click', function(e){
 });
 
 filter.addEventListener('keyup', function(){
-  filterTasks('.current', '#filter');
+  filterZadataka('.current', '#filter');
 });
 
 filter_gotovih.addEventListener('keyup', function(){
-  filterTasks('.finished', '#filter_gotovih');
+  filterZadataka('.finished', '#filter_gotovih');
 });
