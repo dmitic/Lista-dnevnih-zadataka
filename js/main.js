@@ -19,7 +19,7 @@ function dodajZadatak(e) {
   e.preventDefault();
   let unos_zadatka = novi_zadatak.value.trim();
  
-  if (unos_zadatka.trim() === '') {
+  if (unos_zadatka === '') {
     poruke('Polje za unos zadataka ne sme biti prazno!', 'crveno');
     novi_zadatak.focus();
     return false;
@@ -161,13 +161,15 @@ function editTekucegZadatka(e){
     promenjeni_zadatak = prompt('Izmenite zadatak', za_edit.textContent);
 
     if (promenjeni_zadatak !== null) {
-      if (promenjeni_zadatak.trim() === '') {
+      promenjeni_zadatak = promenjeni_zadatak.trim();
+
+      if (promenjeni_zadatak === '') {
         poruke('Zadatak ne može biti prazno polje!', 'crveno');
         return false;
       }
       
       for (let i = 0; i < z_length; i++){
-        if (zadaci[i].zadatak.toLowerCase() === promenjeni_zadatak.toLowerCase().trim()){
+        if (zadaci[i].zadatak.toLowerCase() === promenjeni_zadatak.toLowerCase()){
           poruke('Zadatak već postoji na listi!', 'crveno');
           return false;
         }
