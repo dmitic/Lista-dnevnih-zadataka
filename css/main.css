@@ -81,7 +81,7 @@ i.fa-edit {
   cursor: pointer;
 }
 
-button.svetlo-zelena:hover {
+.svetlo-zelena:hover {
   background: #81c784 !important;
 }
 a.red:hover {

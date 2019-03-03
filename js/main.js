@@ -6,6 +6,12 @@ var filter = document.querySelector('#filter');
 var filter_gotovih = document.querySelector('#filter_gotovih');
 var btnBrisiSveGotove = document.querySelector('.obrisi_gotove');
 
+
+// var instance = M.Modal.getInstance('.modal');
+// var instances = M.Modal.init(document.querySelector('.modal'), {
+//   dismissible: false
+// });
+
 function uZadaci(ls){
   return localStorage.getItem(ls) === null ? [] : JSON.parse(localStorage.getItem(ls));
 }
@@ -54,7 +60,8 @@ function dodajZadatak(e) {
   // za edit dugme
   let edit = document.createElement('a');
   edit.setAttribute('title', 'Izmeni zadatak');
-  edit.className = 'za_edit';
+  edit.href = '#modEdit';
+  edit.className = 'za_edit modal-trigger';
   edit.innerHTML ='<i class="fas fa-edit"></i>';
   li.appendChild(edit);
   lista_trenutnih_zadataka.appendChild(li);
@@ -94,7 +101,8 @@ function prikaziZadatke(zadatak, status, zaBrisanje, lista, ikonica, boja, toolt
     // za edit dugme
     let edit = document.createElement('a');
     edit.setAttribute('title', 'Izmeni zadatak');
-    edit.className = 'za_edit';
+    edit.href = '#modEdit';
+    edit.className = 'za_edit modal-trigger';
     nov === 'nov' ? 
       edit.innerHTML ='<i class="fas fa-edit"></i>' : 
       edit.innerHTML ='<i></i>';
@@ -152,47 +160,71 @@ function prebaciIztekucihUGotove(txtZaLi){
   lista_gotovih_zadataka.appendChild(li);
 }
 
-// za edit
-function editTekucegZadatka(e){
+// za edit (sa modalom)
+function otvoriEditModal(e){
+  let za_edit = e.target.parentElement.parentElement.textContent;
+  var elem= document.querySelector('.modal');
+  var instance = M.Modal.init(elem, {
+    dismissible: false,
+    onOpenStart: function(){
+      document.querySelector('#inp_za_edit').value = za_edit;
+    },
+    endingTop: '30%'
+  });
+
+  document.querySelector('#modEdit').onkeyup = function(ev){
+    if(ev.keyCode == 13) {
+      let element = e.target.parentElement.parentElement;
+      let tekst = document.querySelector('#inp_za_edit').value;
+      editTekucegZadatka(tekst, element);
+      instance.close();
+    }
+    if(ev.keyCode == 27) {
+      instance.close();
+    } 
+  }
+
+  document.querySelector('#modSnimi').onclick = function(){
+    let element = e.target.parentElement.parentElement;
+    let tekst = document.querySelector('#inp_za_edit').value;
+    editTekucegZadatka(tekst, element);
+  }
+
+}
+
+function editTekucegZadatka(tekst, el){
   let zadaci = uZadaci('zadaci');
   let z_length = zadaci.length;
-  let za_edit = e.target.parentElement.parentElement;
+  let promenjeni_zadatak = tekst.trim();
   let ind = -1;
-  let promenjeni_zadatak;
 
-  if (e.target.parentElement.classList.contains('za_edit')){
-    for (let i = 0; i < z_length; i++) {
-      if (za_edit.textContent === zadaci[i].zadatak){     
-        ind = i;
-      }
-    }
 
-    promenjeni_zadatak = prompt('Izmenite zadatak', za_edit.textContent);
-
-    if (promenjeni_zadatak !== null) {
-      promenjeni_zadatak = promenjeni_zadatak.trim();
-
-      if (promenjeni_zadatak === '') {
-        poruke('Zadatak ne može biti prazno polje!', 'crveno');
-        uFilter('#filter');
-        return false;
-      }
-      
-      for (let i = 0; i < z_length; i++){
-        if (zadaci[i].zadatak.toLowerCase() === promenjeni_zadatak.toLowerCase()){
-          poruke('Zadatak već postoji na listi!', 'crveno');
-          uFilter('#filter');
-          return false;
-        }
-      }
-      
-      zadaci[ind].zadatak = promenjeni_zadatak;
-      localStorage.setItem('zadaci', JSON.stringify(zadaci));  
-      za_edit.childNodes[2].textContent = promenjeni_zadatak;
-      poruke('Zadatak je uspešno izmenjen!', 'zeleno');
-    }
+  if (promenjeni_zadatak === '') {
+    poruke('Zadatak ne može biti prazno polje!', 'crveno');
     uFilter('#filter');
+    return false;
   }
+  
+  for (let i = 0; i < z_length; i++){
+    if (zadaci[i].zadatak.toLowerCase() === promenjeni_zadatak.toLowerCase()){
+      poruke('Zadatak već postoji na listi!', 'crveno');
+      uFilter('#filter');
+      return false;
+    }
+  }
+
+  for (let i = 0; i < z_length; i++) {
+    if (zadaci[i].zadatak === el.textContent){     
+      ind = i;
+    }
+  }
+
+  zadaci[ind].zadatak = promenjeni_zadatak;
+  localStorage.setItem('zadaci', JSON.stringify(zadaci));  
+  el.childNodes[2].textContent = promenjeni_zadatak;
+  poruke('Zadatak je uspešno izmenjen!', 'zeleno');
+
+  uFilter('#filter');
 }
 
 function skloniIzTekucih(objZadatak){
@@ -290,7 +322,7 @@ function filterZadataka(koji_task, koji_filter){
 
 function poruke(poruka, boja) {
   let div = document.createElement('div');
-  div.className = 'msg left ' + boja;
+  div.className = 'msg ' + boja;
   div.appendChild(document.createTextNode(poruka));
   let forma_rod = document.querySelector('.container');
   let el_ispod = document.querySelector('.row');
@@ -312,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 lista_trenutnih_zadataka.addEventListener('click', function(e){
   izbrisiTekuciZadatak(e);
-  editTekucegZadatka(e);
+  otvoriEditModal(e);
 });
 
 btnBrisiSveGotove.addEventListener('click', function(e){
