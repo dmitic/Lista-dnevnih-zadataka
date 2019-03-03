@@ -98,9 +98,10 @@ a.red:hover {
 
 .li_grid {
   display: grid;
-  grid-template-columns: 1em max-content 1fr 1.5em 1.5em;
+  grid-template-columns: 1em max-content 1fr max-content 1.5em 1.5em;
   grid-template-rows: auto;
   grid-column-gap: 5px;
+  align-items: end;
 }
 
 .vert_centriranje {

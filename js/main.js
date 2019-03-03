@@ -48,8 +48,16 @@ function dodajZadatak(e) {
   let li = document.createElement('li');
   li.className = 'collection-item current li_grid';
   li.innerHTML ='<i class="fa fa-arrow-circle-right red-text u-padding-right vert_centriranje"></i>';
-  li.innerHTML += '<span class="badge new red u-padding-right" data-badge-caption="Novo!"></span>';
+  li.innerHTML += '<span class="badge new red u-padding-right vert_centriranje" data-badge-caption="Novo!"></span>';
   li.appendChild(document.createTextNode(unos_zadatka));
+
+  // za dodato
+  let span = document.createElement('span');
+  span.innerHTML = `<small>Dodato: ${vremeDodavanja(new Date())}</small>`;
+  span.className = 'u-padding-right';
+  li.appendChild(span);
+  lista_trenutnih_zadataka.appendChild(li);
+
 
   // za edit dugme
   let edit = document.createElement('a');
@@ -68,7 +76,7 @@ function dodajZadatak(e) {
   li.appendChild(link);
   lista_trenutnih_zadataka.appendChild(li);
   
-  snimiNoviZadatak({ zadatak: unos_zadatka });
+  snimiNoviZadatak({ zadatak: unos_zadatka, dodat: vremeDodavanja(new Date()) });
   novi_zadatak.value = '';
   novi_zadatak.focus();
 }
@@ -88,9 +96,18 @@ function prikaziZadatke(zadatak, status, zaBrisanje, lista, ikonica, boja, toolt
 
   for (let i = 0; i < z_length; i++){
     let li = document.createElement('li');
-    li.className = 'collection-item ' + status + ' li_grid';
-    li.innerHTML ='<i class="fa fa-' + ikonica + ' ' + boja + ' u-padding-right vert_centriranje"></i><i></i>';
+    li.className = `collection-item ${status} li_grid`;
+    li.innerHTML = `<i class="fa fa-${ikonica} ${boja} u-padding-right vert_centriranje"></i><i></i>`;
     li.appendChild(document.createTextNode(zadaci[i].zadatak));
+
+    // za dodato
+    let span = document.createElement('span');
+    nov === 'nov' ? 
+      span.innerHTML = `<small>Dodato: ${zadaci[i].dodat}</small>`: 
+      span.innerHTML = `<small>Završen: ${zadaci[i].dodat}</small>`;
+    span.className = 'u-padding-right';
+    li.appendChild(span);
+    lista_trenutnih_zadataka.appendChild(li);
     
     // za edit dugme
     let edit = document.createElement('a');
@@ -108,7 +125,7 @@ function prikaziZadatke(zadatak, status, zaBrisanje, lista, ikonica, boja, toolt
     tooltip === 'tekuci' ? 
       link.setAttribute('title', 'Premesti u listu završenih zadataka') : 
       link.setAttribute('title', 'Obriši iz liste završenih zadataka');
-    link.className = 'delete-item secondary-content ' + zaBrisanje;
+    link.className = `delete-item secondary-content ${zaBrisanje}`;
     strelica === 'zelena_strelica' ? 
       link.innerHTML ='<i class="fa fa-arrow-circle-down green-text"></i>' : 
       link.innerHTML ='<i class="fa fa-ban red-text"></i>';
@@ -126,8 +143,8 @@ function izbrisiTekuciZadatak(e){
   if (e.target.parentElement.classList.contains('deleteCurrent')){
     if(confirm('Da li ste sigurni da želite da prebacite zadatak u gotove zadatke?')){
       tar_element.remove();
-      prebaciIztekucihUGotove(tar_element.textContent);
-      skloniIzTekucih(tar_element);
+      prebaciIztekucihUGotove(tar_element.childNodes[2].textContent, vremeDodavanja(new Date()));
+      skloniIzTekucih(tar_element.childNodes[2]);
     } else {
       uFilter('#filter');
     }
@@ -135,11 +152,18 @@ function izbrisiTekuciZadatak(e){
 }
 
 // premešta stavku iz tekućih u gotove zadatke bez location.reloada()
-function prebaciIztekucihUGotove(txtZaLi){
+function prebaciIztekucihUGotove(txtZaLi, dodat, ){
   let li = document.createElement('li');
   li.className = 'collection-item finished li_grid';
   li.innerHTML ='<i class="fa fa-check green-text u-padding-right vert_centriranje"></i><span></span>';
   li.appendChild(document.createTextNode(txtZaLi));
+
+  // za dodato
+  let span = document.createElement('span');
+  span.innerHTML = `<small>Završen: ${dodat}</small>`;
+  span.className = 'u-padding-right';
+  li.appendChild(span);
+  lista_trenutnih_zadataka.appendChild(li);
 
   let edit = document.createElement('a');
   edit.innerHTML ='<i></i>';
@@ -156,7 +180,7 @@ function prebaciIztekucihUGotove(txtZaLi){
 
 // za edit (sa modalom)
 function otvoriEditModal(e){
-  let za_edit = e.target.parentElement.parentElement.textContent;
+  let za_edit = e.target.parentElement.parentElement.childNodes[2].textContent;
   var elem= document.querySelector('.modal');
   var instance = M.Modal.init(elem, {
     dismissible: false,
@@ -168,7 +192,7 @@ function otvoriEditModal(e){
 
   document.querySelector('#modEdit').onkeyup = function(ev){
     if(ev.keyCode == 13) {
-      let element = e.target.parentElement.parentElement;
+      let element = e.target.parentElement.parentElement.childNodes[2];
       let tekst = document.querySelector('#inp_za_edit').value;
       editTekucegZadatka(tekst, element);
       instance.close();
@@ -179,7 +203,7 @@ function otvoriEditModal(e){
   }
 
   document.querySelector('#modSnimi').onclick = function(){
-    let element = e.target.parentElement.parentElement;
+    let element = e.target.parentElement.parentElement.childNodes[2];
     let tekst = document.querySelector('#inp_za_edit').value;
     editTekucegZadatka(tekst, element);
   }
@@ -215,7 +239,7 @@ function editTekucegZadatka(tekst, el){
 
   zadaci[ind].zadatak = promenjeni_zadatak;
   localStorage.setItem('zadaci', JSON.stringify(zadaci));  
-  el.childNodes[2].textContent = promenjeni_zadatak;
+  el.textContent = promenjeni_zadatak;
   poruke('Zadatak je uspešno izmenjen!', 'zeleno');
 
   uFilter('#filter');
@@ -233,7 +257,7 @@ function skloniIzTekucih(objZadatak){
   }
   
   if (objZadatak.textContent === zadaci[ind].zadatak){
-    premestiUZavrsene(zadaci[ind].zadatak);
+    premestiUZavrsene({ zadatak: zadaci[ind].zadatak, dodat: zadaci[ind].dodat });
     zadaci.splice(ind, 1);
   }
 
@@ -243,8 +267,8 @@ function skloniIzTekucih(objZadatak){
 
 function premestiUZavrsene(zavrseniZadatak){
   let zavrseniZadaci = uZadaci('zavrseniZadaci');
-  
-  zavrseniZadaci.push({zadatak: zavrseniZadatak});
+  zavrseniZadatak.dodat = vremeDodavanja(new Date());
+  zavrseniZadaci.push(zavrseniZadatak);
   localStorage.setItem('zavrseniZadaci', JSON.stringify(zavrseniZadaci));
   poruke('Zadatak je uspešno prebačen u listu završenih zadataka!', 'zeleno');
 }
@@ -268,12 +292,12 @@ function obrisiZavrseniIzLS(objZadatak){
   let ind = -1;
 
   for (let i = 0; i < z_length; i++) {
-    if (objZadatak.textContent === zavrseniZadaci[i].zadatak){     
+    if (objZadatak.childNodes[2].textContent === zavrseniZadaci[i].zadatak){     
       ind = i;
     }
   }
 
-  if (objZadatak.textContent === zavrseniZadaci[ind].zadatak){
+  if (objZadatak.childNodes[2].textContent === zavrseniZadaci[ind].zadatak){
     zavrseniZadaci.splice(ind, 1);
   }
 
@@ -314,9 +338,26 @@ function filterZadataka(koji_task, koji_filter){
   });
 }
 
+function vremeDodavanja(date) {
+  var meseci = [
+    "Januar", "Februar", "Mart", "April", "Maj", "Jun", "Jul",
+    "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"
+  ];
+
+  var dan = date.getDate();
+  var mesec = date.getMonth();
+  var godina = date.getFullYear();
+  var sati = date.getHours();
+  var minuti = date.getMinutes();
+  if (sati < 10) sati = `0${sati}`;
+  if (minuti < 10) minuti = `0${minuti}`;
+
+  return `${dan}. ${meseci[mesec]} ${godina}, u ${sati}:${minuti}`;
+}
+
 function poruke(poruka, boja) {
   let div = document.createElement('div');
-  div.className = 'msg ' + boja;
+  div.className = `msg ${boja}`;
   div.appendChild(document.createTextNode(poruka));
   let forma_rod = document.querySelector('.container');
   let el_ispod = document.querySelector('.row');
