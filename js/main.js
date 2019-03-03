@@ -6,12 +6,6 @@ var filter = document.querySelector('#filter');
 var filter_gotovih = document.querySelector('#filter_gotovih');
 var btnBrisiSveGotove = document.querySelector('.obrisi_gotove');
 
-
-// var instance = M.Modal.getInstance('.modal');
-// var instances = M.Modal.init(document.querySelector('.modal'), {
-//   dismissible: false
-// });
-
 function uZadaci(ls){
   return localStorage.getItem(ls) === null ? [] : JSON.parse(localStorage.getItem(ls));
 }
