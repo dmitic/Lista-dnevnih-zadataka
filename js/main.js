@@ -53,7 +53,7 @@ function dodajZadatak(e) {
 
   // za dodato
   let span = document.createElement('span');
-  span.innerHTML = `<small>Dodato: ${vremeDodavanja(new Date())}</small>`;
+  span.innerHTML = `<small class='sakrij'>Dodato: ${vremeDodavanja(new Date())}</small>`;
   span.className = 'u-padding-right';
   li.appendChild(span);
   lista_trenutnih_zadataka.appendChild(li);
@@ -103,8 +103,8 @@ function prikaziZadatke(zadatak, status, zaBrisanje, lista, ikonica, boja, toolt
     // za dodato
     let span = document.createElement('span');
     nov === 'nov' ? 
-      span.innerHTML = `<small>Dodato: ${zadaci[i].dodat}</small>`: 
-      span.innerHTML = `<small>Završen: ${zadaci[i].dodat}</small>`;
+      span.innerHTML = `<small class='sakrij'>Dodato: ${zadaci[i].dodat}</small>`: 
+      span.innerHTML = `<small class='sakrij'>Završen: ${zadaci[i].dodat}</small>`;
     span.className = 'u-padding-right';
     li.appendChild(span);
     lista_trenutnih_zadataka.appendChild(li);

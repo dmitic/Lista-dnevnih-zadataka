@@ -151,8 +151,16 @@ a.red:hover {
   .footer {
     font-size: 12px;
   }
+  .sakrij {
+    font-size: 10px;
+  }
 }
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 736px) {
+  .sakrij {
+    font-size: 8px;
+  }
+}
+@media only screen and (max-width: 568px) {
   .heading,
   .footer {
     line-height: 60px;
@@ -171,13 +179,20 @@ a.red:hover {
   .footer {
     font-size: 10px;
   }
+  .sakrij {
+    display: none;
+    /* font-size: 8px; */
+  }
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 480px) {
   .zeleno,
   .crveno {
     padding: 0.5em 1em;
     font-size: 10px;
+  }
+  .sakrij {
+    display: none;
   }
 }
 
@@ -199,5 +214,8 @@ a.red:hover {
   }
   .footer {
     font-size: 8px;
+  }
+  .sakrij {
+    display: none;
   }
 }
