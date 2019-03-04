@@ -160,7 +160,7 @@ function prebaciIztekucihUGotove(txtZaLi, dodat, ){
 
   // za dodato
   let span = document.createElement('span');
-  span.innerHTML = `<small>Završen: ${dodat}</small>`;
+  span.innerHTML = `<small class='sakrij'>Završen: ${dodat}</small>`;
   span.className = 'u-padding-right';
   li.appendChild(span);
   lista_trenutnih_zadataka.appendChild(li);
