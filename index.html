@@ -16,7 +16,7 @@
       <div class="container">
         <div class="row">
           <div class="col s12">
-            <div id="main" class="card z-depth-4">
+            <div class="card z-depth-4">
               <header class="heading">
                 <p>Lista zadataka</p>
               </header>
@@ -52,7 +52,7 @@
                   <label for="filter_gotovih">Filtriraj zadatke</label>
                 </div>
                 <ul class="collection" id="gotovi_zadaci"></ul>
-                <a href="#!" class="obrisi_gotove btn red right waves-effect waves-light"><i class="far fa-trash-alt left"></i>Obriši sve završene zadatke</a>
+                <a href="#modObrisiSve" class="obrisi_gotove btn red right waves-effect waves-light modal-trigger"><i class="far fa-trash-alt left"></i>Obriši sve završene zadatke</a>
                 <div class="clearfix"></div>
               </div>
               <footer class="footer">
@@ -64,15 +64,49 @@
       </div>
     </div>
 
-      <!-- Modal -->
+      <!-- Modali -->
     <div id="modEdit" class="modal">
       <div class="modal-content">
-        <h5>Izmeni zadatak:</h5>
+        <h5>Lista zadataka</h5><hr><br>
+        <h6>Izmeni zadatak:</h6>
         <input type="text" id="inp_za_edit">
       </div>
       <div class="modal-footer">
         <a href="#!" class="modal-close waves-effect waves-green btn-flat" title="Odustani od promene">Odustani</a>
         <a href="#!" class="modal-close btn-flat green white-text right svetlo-zelena waves-effect waves-dark" id="modSnimi" title="Sačuvaj promenu">Sačuvaj<i class="fas fa-check u-padding-left"></i></a>
+      </div>
+    </div>
+
+    <div id="modPremestiUZavrsene" class="modal">
+        <div class="modal-content">
+          <h5>Lista zadataka</h5><hr>
+          <div>Da li ste sigurni da želite da prebacite zadatak u gotove zadatke?</div>
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-close btn red white-text waves-effect waves-green" id="neMpuz">Ne</a>
+          <a href="#!" class="modal-close btn green white-text svetlo-zelena waves-effect waves-dark" id="mpuz">Da<i class="fas fa-check u-padding-left"></i></a>
+        </div>
+      </div>
+
+    <div id="modObrisiZavrseni" class="modal">
+        <div class="modal-content">
+          <h5>Lista zadataka</h5><hr>
+          <div>Da li ste sigurni da želite da obrišete zadatak?</div>
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-close btn red white-text waves-effect waves-green" id="neMoz">Ne</a>
+          <a href="#!" class="modal-close btn green white-text svetlo-zelena waves-effect waves-dark" id="obrisiZavrseni">Da<i class="fas fa-check u-padding-left"></i></a>
+        </div>
+      </div>
+
+    <div id="modObrisiSve" class="modal">
+      <div class="modal-content">
+        <h5>Lista zadataka</h5><hr>
+        <div>Da li ste sigurni da želite da obrišete sve gotove zadatke?</div>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close btn red white-text waves-effect waves-green">Ne</a>
+        <a href="#!" class="modal-close btn green white-text svetlo-zelena waves-effect waves-dark" id="modObrisi">Da<i class="fas fa-check u-padding-left"></i></a>
       </div>
     </div>
 

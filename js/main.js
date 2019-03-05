@@ -21,6 +21,12 @@ function uFilter(filter){
   if (fil_polje.value.trim() === '') fil_polje.value = '';
 }
 
+function modalDestroy(instance){
+  setTimeout(function(){
+    instance.destroy();
+  }, 500);
+}
+
 // Dodavanje zadataka
 function dodajZadatak(e) {
   e.preventDefault();
@@ -58,7 +64,6 @@ function dodajZadatak(e) {
   li.appendChild(span);
   lista_trenutnih_zadataka.appendChild(li);
 
-
   // za edit dugme
   let edit = document.createElement('a');
   edit.setAttribute('title', 'Izmeni zadatak');
@@ -71,7 +76,8 @@ function dodajZadatak(e) {
   // za delete dugme
   let link = document.createElement('a');
   link.setAttribute('title', 'Premesti u listu završenih zadataka');
-  link.className = 'delete-item secondary-content deleteCurrent';
+  link.href = '#modPremestiUZavrsene';
+  link.className = 'delete-item secondary-content deleteCurrent modal-trigger';
   link.innerHTML ='<i class="fa fa-arrow-circle-down green-text"></i>';
   li.appendChild(link);
   lista_trenutnih_zadataka.appendChild(li);
@@ -125,7 +131,10 @@ function prikaziZadatke(zadatak, status, zaBrisanje, lista, ikonica, boja, toolt
     tooltip === 'tekuci' ? 
       link.setAttribute('title', 'Premesti u listu završenih zadataka') : 
       link.setAttribute('title', 'Obriši iz liste završenih zadataka');
-    link.className = `delete-item secondary-content ${zaBrisanje}`;
+    nov === 'nov' ? 
+      link.href = '#modPremestiUZavrsene' : 
+      link.href = '#modObrisiZavrseni';
+    link.className = `delete-item secondary-content ${zaBrisanje} modal-trigger`;
     strelica === 'zelena_strelica' ? 
       link.innerHTML ='<i class="fa fa-arrow-circle-down green-text"></i>' : 
       link.innerHTML ='<i class="fa fa-ban red-text"></i>';
@@ -139,13 +148,35 @@ function prikaziZadatke(zadatak, status, zaBrisanje, lista, ikonica, boja, toolt
 // Briše targetovani li element i poziva funkciju da ga premesti u UL gotovih i obriše iz 'zadaci' iz LS
 function izbrisiTekuciZadatak(e){
   let tar_element = e.target.parentElement.parentElement;
-  
+
   if (e.target.parentElement.classList.contains('deleteCurrent')){
-    if(confirm('Da li ste sigurni da želite da prebacite zadatak u gotove zadatke?')){
+    var elem= document.querySelector('#modPremestiUZavrsene');
+    var instance = M.Modal.init(elem, {
+      dismissible: false,
+      endingTop: '30%'
+    });
+
+    document.querySelector('#modPremestiUZavrsene').onkeyup = function(ev){
+      if(ev.keyCode == 13) {
+        tar_element.remove();
+        prebaciIztekucihUGotove(tar_element.childNodes[2].textContent, vremeDodavanja(new Date()));
+        skloniIzTekucih(tar_element.childNodes[2]);
+        instance.close();
+        modalDestroy(instance);
+        uFilter('#filter');
+      }
+      if(ev.keyCode == 27) {
+        instance.close();
+        modalDestroy(instance);
+        uFilter('#filter');
+      } 
+    }
+  
+    document.querySelector('#mpuz').onclick = function(){
       tar_element.remove();
       prebaciIztekucihUGotove(tar_element.childNodes[2].textContent, vremeDodavanja(new Date()));
       skloniIzTekucih(tar_element.childNodes[2]);
-    } else {
+      modalDestroy(instance);
       uFilter('#filter');
     }
   }
@@ -172,7 +203,8 @@ function prebaciIztekucihUGotove(txtZaLi, dodat, ){
 
   let link = document.createElement('a');
   link.setAttribute('title', 'Obriši iz liste završenih zadataka');
-  link.className = 'delete-item secondary-content deleteFinished';
+  link.href = '#modObrisiZavrseni';
+  link.className = 'delete-item secondary-content deleteFinished modal-trigger';
   link.innerHTML ='<i class="fa fa-ban red-text"></i>';
   li.appendChild(link);
   lista_gotovih_zadataka.appendChild(li);
@@ -181,7 +213,7 @@ function prebaciIztekucihUGotove(txtZaLi, dodat, ){
 // za edit (sa modalom)
 function otvoriEditModal(e){
   let za_edit = e.target.parentElement.parentElement.childNodes[2].textContent;
-  var elem= document.querySelector('.modal');
+  var elem= document.querySelector('#modEdit');
   var instance = M.Modal.init(elem, {
     dismissible: false,
     onOpenStart: function(){
@@ -196,9 +228,13 @@ function otvoriEditModal(e){
       let tekst = document.querySelector('#inp_za_edit').value;
       editTekucegZadatka(tekst, element);
       instance.close();
+      modalDestroy(instance);
+      uFilter('#filter');
     }
     if(ev.keyCode == 27) {
       instance.close();
+      modalDestroy(instance);
+      uFilter('#filter');
     } 
   }
 
@@ -206,8 +242,9 @@ function otvoriEditModal(e){
     let element = e.target.parentElement.parentElement.childNodes[2];
     let tekst = document.querySelector('#inp_za_edit').value;
     editTekucegZadatka(tekst, element);
+    modalDestroy(instance);
+    uFilter('#filter');
   }
-
 }
 
 function editTekucegZadatka(tekst, el){
@@ -215,7 +252,6 @@ function editTekucegZadatka(tekst, el){
   let z_length = zadaci.length;
   let promenjeni_zadatak = tekst.trim();
   let ind = -1;
-
 
   if (promenjeni_zadatak === '') {
     poruke('Zadatak ne može biti prazno polje!', 'crveno');
@@ -241,7 +277,6 @@ function editTekucegZadatka(tekst, el){
   localStorage.setItem('zadaci', JSON.stringify(zadaci));  
   el.textContent = promenjeni_zadatak;
   poruke('Zadatak je uspešno izmenjen!', 'zeleno');
-
   uFilter('#filter');
 }
 
@@ -277,11 +312,33 @@ function obrisiZavrseni(e){
   let tar_element = e.target.parentElement.parentElement;
 
   if (e.target.parentElement.classList.contains('deleteFinished')){
-    if(confirm('Da li ste sigurni da želite da obrišete zadatak?')){
+    var elem= document.querySelector('#modObrisiZavrseni');
+    var instance = M.Modal.init(elem, {
+      dismissible: false,
+      endingTop: '30%'
+    });
+
+    document.querySelector('#obrisiZavrseni').onclick = function(){
       tar_element.remove();
       obrisiZavrseniIzLS(tar_element);
-    } else {
+      modalDestroy(instance);
+    }
+    document.querySelector('#neMoz').onclick = function(){
+      modalDestroy(instance);
       uFilter('#filter_gotovih');
+    }
+    document.querySelector('#modObrisiZavrseni').onkeyup = function(ev){
+      if(ev.keyCode == 13) {
+        tar_element.remove();
+        obrisiZavrseniIzLS(tar_element);
+        instance.close();
+        modalDestroy(instance);
+      }
+      if(ev.keyCode == 27) {
+        instance.close();
+        modalDestroy(instance);
+        uFilter('#filter_gotovih');
+      } 
     }
   }
 }
@@ -306,26 +363,44 @@ function obrisiZavrseniIzLS(objZadatak){
   uFilter('#filter_gotovih');
 }
 
-// briše sve gotove zadatke i čisti LS
+// briše sve gotove zadatke i čisti LS (modal)
 function obrisiSveGotove(){
   let zavrseniZadaci = uZadaci('zavrseniZadaci');
-
   if (zavrseniZadaci.length === 0) {
     poruke('Nema zadataka za brisanje!', 'crveno');
-    uFilter('#filter_gotovih');
     return false;
-  }
-
-  if(confirm('Da li ste sigurni da želite da obrišete sve gotove zadatke?')){
-    while(lista_gotovih_zadataka.firstChild){
-      lista_gotovih_zadataka.removeChild(lista_gotovih_zadataka.firstChild);
-    }
-    localStorage.removeItem('zavrseniZadaci');
-    poruke('Gotovi zadaci su uspešno obrisani!', 'zeleno');
-    uFilter('#filter_gotovih');
   } else {
-    uFilter('#filter_gotovih');
+    var elem= document.querySelector('#modObrisiSve');
+    var instance = M.Modal.init(elem, {
+      dismissible: false,
+      endingTop: '30%'
+    });
+
+    document.querySelector('#modObrisi').onclick = function(){
+      brisanjeSvih(instance);
+    }
+
+    document.querySelector('#modObrisiSve').onkeyup = function(ev){
+      if(ev.keyCode == 13) {
+        brisanjeSvih(instance);
+      }
+      if(ev.keyCode == 27) {
+        instance.close();
+        modalDestroy(instance);
+        uFilter('#filter_gotovih');
+      } 
+    } 
   }
+}
+
+function brisanjeSvih(instance){
+  while(lista_gotovih_zadataka.firstChild){
+    lista_gotovih_zadataka.removeChild(lista_gotovih_zadataka.firstChild);
+  }
+  localStorage.removeItem('zavrseniZadaci');
+  poruke('Gotovi zadaci su uspešno obrisani!', 'zeleno');
+  instance.close();
+  modalDestroy(instance);
 }
 
 // filter
