@@ -182,7 +182,7 @@ function izbrisiTekuciZadatak(e){
   }
 }
 
-// premešta stavku iz tekućih u gotove zadatke bez location.reloada()
+// premešta stavku iz tekućih u gotove zadatke
 function prebaciIztekucihUGotove(txtZaLi, dodat, ){
   let li = document.createElement('li');
   li.className = 'collection-item finished li_grid';
@@ -414,16 +414,16 @@ function filterZadataka(koji_task, koji_filter){
 }
 
 function vremeDodavanja(date) {
-  var meseci = [
+  let meseci = [
     "Januar", "Februar", "Mart", "April", "Maj", "Jun", "Jul",
     "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"
   ];
 
-  var dan = date.getDate();
-  var mesec = date.getMonth();
-  var godina = date.getFullYear();
-  var sati = date.getHours();
-  var minuti = date.getMinutes();
+  let dan = date.getDate();
+  let mesec = date.getMonth();
+  let godina = date.getFullYear();
+  let sati = date.getHours();
+  let minuti = date.getMinutes();
   if (sati < 10) sati = `0${sati}`;
   if (minuti < 10) minuti = `0${minuti}`;
 
