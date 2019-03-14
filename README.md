@@ -12,4 +12,8 @@ Sama aplikacija je zamišljena kao singl page api (SPA) tako da je ceo UI prilag
 
 ## Uputstvo
 
+<<<<<<< HEAD
 U polje "Unesi zadatak" se upisuje zadatak zatim se klikom na "Dodaj zadatak" snima u localstorage (LS) i prikazuje na samoj stranici u sekciji "Zadaci". Tu je moguće promeniti sadržaj zadatka klikom na ikonicu za edit (Izmeni zadatak - narandžasta ikona) ili ga je moguće označiti kao završen zadatak klikom na dugme "Zelena strelica na dole" (Premesti u listu završenih zadataka). Tim postupkom se zadatak briše iz liste zadataka i prebacuje se u LS završenih zadataka. U trenutku obeležavanja zadatka da je završen beleži se i vreme kad je završen i prikazuje pored samog teksta zadatka. Sa liste završenih zadataka moguće je samo izbrisati zadatak po izboru ili obrisati ceo LS završenih zadataka klikom na dugme "Obriši sve zadatke).
+=======
+U polje "Unesi zadatak" se upisuje zadatak zatim se klikom na "Dodaj zadatak" snima u localstorage (LS) i prikazuje na samoj stranici u sekciji "Zadaci". Tu je moguće promeniti sadržaj zadatka klikom na ikonicu za edit (Izmeni zadatak - narandžasta ikona) ili ga je moguće označiti kao završen zadatak klikom na dugme "Zelena strelica na dole" (Premesti u listu završenih zadataka). Tim postupkom se zadatak briše iz liste zadataka i prebacuje se u LS završenih zadataka. U trenutku obeležavanja zadatka da je završen beleži se i vreme kad je završen i prikazuje pored samog teksta zadatka. Sa liste završenih zadataka moguće je samo izbrisati zadatak po izboru ili obrisati ceo LS završenih zadataka klikom na dugme "Obriši sve zadatke).
+>>>>>>> 7ba52f2806e05e847eac704c113c06905be2a6fe

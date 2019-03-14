@@ -292,7 +292,8 @@ function skloniIzTekucih(objZadatak){
   }
   
   if (objZadatak.textContent === zadaci[ind].zadatak){
-    premestiUZavrsene({ zadatak: zadaci[ind].zadatak, dodat: zadaci[ind].dodat });
+    premestiUZavrsene(zadaci[ind]);
+    // premestiUZavrsene({ zadatak: zadaci[ind].zadatak, dodat: zadaci[ind].dodat });
     zadaci.splice(ind, 1);
   }
 
